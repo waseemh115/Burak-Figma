@@ -3,475 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BURAK MULTIOMICS™ | Multi-Omics Health Analysis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <title>Burak Multiomics | Multi-Omics Health Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #00D4FF; --primary-dark: #00A3CC; --secondary: #0066FF;
-            --purple: #8B5CF6; --green: #10B981; --red: #EF4444; --orange: #F59E0B;
-            --blue: #3B82F6; --bg-light: #F8FAFB; --text-dark: #1A1F36; --text-gray: #6B7280;
-            --gradient-primary: linear-gradient(135deg, #00D4FF 0%, #0066FF 100%);
+            --background: hsl(180 20% 98%);
+            --foreground: hsl(200 25% 15%);
+            --primary: hsl(174 55% 45%);
+            --primary-foreground: #fff;
+            --secondary: hsl(180 30% 95%);
+            --muted: hsl(200 10% 45%);
+            --border: hsl(180 20% 88%);
+            --radius: 0.75rem;
+            --hero-gradient: linear-gradient(135deg, hsl(180 30% 97%) 0%, hsl(200 40% 92%) 50%, hsl(180 25% 95%) 100%);
+            --section-gradient: linear-gradient(180deg, #fff 0%, hsl(180 20% 97%) 100%);
         }
-        body { font-family: 'Inter', sans-serif; background: white; color: var(--text-dark); line-height: 1.6; }
-        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.06); z-index: 1000; }
-        .nav-container { max-width: 1400px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-        .logo img { height: 40px; }
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a { color: var(--text-dark); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-        .nav-cta { padding: 10px 24px; background: var(--gradient-primary); border: none; border-radius: 10px; color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
-        
-        .hero { margin-top: 70px; padding: 4rem 2rem 3rem; background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%); text-align: center; }
-        .hero-container { max-width: 1100px; margin: 0 auto; }
-        .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 900; line-height: 1.15; margin-bottom: 1.5rem; color: var(--text-dark); position: relative; }
-        .hero h1 .highlight { 
-            background: linear-gradient(135deg, #00D4FF 0%, #0066FF 50%, #8B5CF6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-            display: inline-block;
+        body { font-family: 'Poppins', sans-serif; background: var(--background); color: var(--foreground); line-height: 1.6; }
+        a { color: inherit; text-decoration: none; }
+
+        /* Navbar */
+        nav {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 2rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(8px);
+            position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--border);
         }
-        .hero h1 .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, #00D4FF, #0066FF, #8B5CF6);
-            border-radius: 3px;
-            opacity: 0.3;
+        .nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: inherit; }
+        .nav-logo .logo-text { font-size: 1.25rem; font-weight: 600; color: var(--foreground); }
+        .nav-logo .logo-text span { color: var(--primary); }
+        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        .nav-links a { font-size: 0.875rem; font-weight: 500; color: var(--foreground); transition: color 0.2s; }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-cta {
+            padding: 0.5rem 1.25rem; border-radius: 9999px; background: var(--primary); color: var(--primary-foreground);
+            font-size: 0.875rem; font-weight: 500; border: none; cursor: pointer; transition: opacity 0.2s;
         }
-        .hero-subtitle { font-size: 1rem; color: var(--text-gray); max-width: 700px; margin: 0 auto 1rem; }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 8px 20px;
-            background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(139,92,246,0.15));
-            border: 2px solid rgba(0,212,255,0.3);
-            border-radius: 50px;
-            margin-bottom: 1.5rem;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--primary);
-            animation: pulse-glow 2s ease-in-out infinite;
+        .nav-cta:hover { opacity: 0.9; }
+        @media (max-width: 768px) { .nav-links { display: none; } }
+
+        /* Hero */
+        .hero {
+            position: relative; padding: 5rem 2rem; text-align: center;
+            background: linear-gradient(rgba(255,255,255,0.75), rgba(240,249,255,0.8)), url("images/dna background.png") center/cover no-repeat;
         }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(0,212,255,0.2); }
-            50% { box-shadow: 0 0 30px rgba(0,212,255,0.4); }
+        .hero-bg-overlay { display: none; }
+        .hero-inner { position: relative; z-index: 1; max-width: 48rem; margin: 0 auto; }
+        .hero h1 { font-size: 2.25rem; font-weight: 700; line-height: 1.2; margin-bottom: 1.5rem; color: var(--foreground); }
+        @media (min-width: 768px) { .hero h1 { font-size: 3rem; } }
+        .hero p { color: var(--muted); font-size: 1rem; margin-bottom: 1rem; max-width: 42rem; margin-left: auto; margin-right: auto; }
+        .hero .hero-tag { font-size: 0.875rem; margin-bottom: 2.5rem; }
+        .hero-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s; border: 2px solid var(--primary); }
+        .btn-outline { background: transparent; color: var(--primary); }
+        .btn-outline:hover { background: var(--primary); color: var(--primary-foreground); }
+        .btn-primary { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+        .btn-primary:hover { opacity: 0.9; }
+
+        /* Burak Multiomics Analyzes */
+        .section { padding: 4rem 2rem; position: relative; background-size: cover; background-position: center; background-repeat: no-repeat; }
+        .section.section-analyzes { background-image: linear-gradient(rgba(255,255,255,0.72), rgba(248,252,255,0.78)), url("images/background.png"); background-size: cover; background-position: center; background-repeat: no-repeat; }
+        .container { max-width: 1280px; margin: 0 auto; position: relative; z-index: 1; }
+        .section-title { font-size: 1.875rem; font-weight: 700; text-align: center; color: var(--foreground); margin-bottom: 3rem; }
+        .section-title .accent { color: var(--primary); }
+        .analyzes-row {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+            max-width: 56rem; margin: 0 auto;
         }
-        .hero-badge .badge-icon {
-            font-size: 1rem;
-            animation: spin 3s linear infinite;
+        @media (min-width: 768px) { .analyzes-row { flex-direction: row; } }
+        .analyze-card {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            width: 12rem; min-height: 14rem; border-radius: 1rem; background: #fff; border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 1.25rem 1rem; transition: box-shadow 0.2s;
         }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .analyze-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .analyze-card img { width: 4.5rem; height: 4.5rem; object-fit: contain; flex-shrink: 0; }
+        .analyze-card .analyze-card-title { margin-top: 0.75rem; font-size: 1rem; font-weight: 700; color: var(--foreground); }
+        .analyze-card .analyze-card-subtitle { margin-top: 0.35rem; font-size: 0.75rem; font-weight: 500; color: var(--primary); line-height: 1.35; }
+        .analyzes-tagline { text-align: center; font-size: 1rem; font-weight: 500; color: var(--muted); line-height: 1.5; max-width: 36rem; margin: 2rem auto 0; }
+
+        /* Why Burak Multiomics Works */
+        .why-section { background-image: linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.9)), url("images/dna background.png"); }
+        .why-section .container { position: relative; z-index: 1; }
+        .why-subtitle { text-align: center; color: var(--muted); font-size: 0.875rem; max-width: 42rem; margin: 0 auto 3rem; }
+        .why-blocks { max-width: 56rem; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem; }
+        .why-block {
+            display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+            padding: 1.5rem; border-radius: 1rem; background: #F0F8FF; border: 1px solid rgba(144, 238, 144, 0.85);
         }
-        .hero-tagline { font-size: 0.9rem; color: var(--text-dark); font-weight: 600; margin-bottom: 2rem; }
-        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-        .btn { padding: 12px 28px; border: none; border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; }
-        .btn-primary { background: var(--gradient-primary); color: white; box-shadow: 0 4px 20px rgba(0,212,255,0.3); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0,212,255,0.4); }
-        .btn-secondary { background: white; color: var(--primary); border: 2px solid var(--primary); }
-        
-        .section { padding: 3rem 2rem; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        
-        .analysis-section { background: white; }
-        .analysis-title { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem; }
-        .analysis-subtitle { text-align: center; color: var(--text-gray); margin-bottom: 2rem; font-size: 0.95rem; }
-        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-        .card { background: white; border-radius: 20px; padding: 2rem 1.5rem; text-align: center; border: 2px solid #E5E7EB; transition: all 0.3s; }
-        .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,212,255,0.15); }
-        .card-icon { width: 70px; height: 70px; margin: 0 auto 1rem; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
-        .card-icon.gut { background: linear-gradient(135deg, #10B981, #059669); }
-        .card-icon.blood { background: linear-gradient(135deg, #EF4444, #DC2626); }
-        .card-icon.inflammation { background: linear-gradient(135deg, #F59E0B, #D97706); }
-        .card h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem; }
-        .card p { color: var(--text-gray); font-size: 0.9rem; line-height: 1.6; }
-        .card-label { display: inline-block; margin-top: 1rem; padding: 6px 16px; background: rgba(0,212,255,0.1); color: var(--primary); border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-        
-        .workflow-section { background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); padding: 3rem 2rem; color: white; }
-        .workflow-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; max-width: 900px; margin: 2rem auto 0; }
-        .workflow-card { background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
-        .workflow-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem; color: var(--primary); }
-        .workflow-desc { font-size: 0.9rem; line-height: 1.7; opacity: 0.9; }
-        
-        .evidence-section { background: var(--bg-light); }
-        .section-header { text-align: center; margin-bottom: 2.5rem; }
-        .section-title { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 0.75rem; }
-        .section-subtitle { color: var(--text-gray); font-size: 0.95rem; max-width: 650px; margin: 0 auto; }
-        .evidence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-        .evidence-card { background: white; border-radius: 16px; padding: 1.75rem; border: 1px solid #E5E7EB; transition: all 0.3s; }
-        .evidence-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.08); transform: translateY(-3px); }
-        .evidence-source { display: inline-block; padding: 6px 16px; background: var(--gradient-primary); color: white; border-radius: 16px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; }
-        .evidence-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.4; }
-        .evidence-date { color: var(--text-gray); font-size: 0.8rem; margin-bottom: 1rem; }
-        .evidence-link { color: var(--primary); text-decoration: none; font-weight: 700; font-size: 0.85rem; }
-        
-        .flow-section { background: white; }
-        .flow-diagram { background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%); border-radius: 20px; padding: 2.5rem 2rem; margin-top: 2rem; }
-        .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
-        .flow-step { text-align: center; }
-        .flow-icon { width: 80px; height: 80px; background: white; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 3px solid var(--primary); box-shadow: 0 5px 20px rgba(0,212,255,0.2); }
-        .flow-label { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; }
-        .flow-desc { font-size: 0.8rem; color: var(--text-gray); }
-        
-        .patterns-section { background: var(--bg-light); }
-        .pattern-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
-        .pattern-card { background: white; border-radius: 16px; padding: 1.75rem 1.25rem; text-align: center; border: 2px solid; transition: all 0.3s; }
-        .pattern-card.critical { border-color: var(--red); }
-        .pattern-card.warning { border-color: var(--orange); }
-        .pattern-card.monitor { border-color: var(--blue); }
-        .pattern-card.safe { border-color: var(--green); }
-        .pattern-card:hover { transform: translateY(-5px); }
-        .pattern-status { display: inline-block; padding: 6px 20px; border-radius: 20px; font-weight: 800; font-size: 0.7rem; margin-bottom: 1rem; text-transform: uppercase; color: white; }
-        .pattern-status.critical { background: linear-gradient(135deg, var(--red), #DC2626); }
-        .pattern-status.warning { background: linear-gradient(135deg, var(--orange), #D97706); }
-        .pattern-status.monitor { background: linear-gradient(135deg, var(--blue), #2563EB); }
-        .pattern-status.safe { background: linear-gradient(135deg, var(--green), #059669); }
-        .pattern-title { font-size: 1rem; font-weight: 800; margin-bottom: 0.75rem; line-height: 1.3; }
-        .pattern-desc { font-size: 0.8rem; color: var(--text-gray); margin-bottom: 1rem; }
-        .pattern-meaning { background: var(--bg-light); border-radius: 8px; padding: 0.75rem; font-size: 0.75rem; text-align: left; line-height: 1.5; }
-        .marker-row { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
-        .marker { width: 12px; height: 40px; border-radius: 6px; }
-        .marker.high { background: linear-gradient(to top, var(--red), #DC2626); }
-        .marker.low { background: #E5E7EB; }
-        
-        .rule-section { background: white; }
-        .rule-grid { display: flex; justify-content: center; gap: 2.5rem; margin: 2.5rem 0; flex-wrap: wrap; }
-        .rule-circle { width: 130px; height: 130px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: 900; box-shadow: 0 10px 40px; transition: transform 0.3s; }
-        .rule-circle:hover { transform: scale(1.08); }
-        .rule-circle.critical { background: linear-gradient(135deg, var(--red), #DC2626); box-shadow: 0 10px 40px rgba(239,68,68,0.4); }
-        .rule-circle.watch { background: linear-gradient(135deg, var(--orange), #D97706); box-shadow: 0 10px 40px rgba(245,158,11,0.4); }
-        .rule-circle.noise { background: linear-gradient(135deg, #6366F1, #4F46E5); box-shadow: 0 10px 40px rgba(99,102,241,0.4); }
-        .rule-number { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; line-height: 1; margin-bottom: 0.3rem; }
-        .rule-label { font-size: 0.65rem; line-height: 1.2; font-weight: 700; text-align: center; }
-        .rule-tagline { text-align: center; font-size: 1rem; color: var(--text-gray); font-style: italic; margin-top: 2rem; }
-        
-        .why-section { background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%); }
-        .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 2rem; }
-        .why-card { text-align: center; }
-        .why-icon { width: 80px; height: 80px; background: white; border-radius: 16px; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
-        .why-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.75rem; }
-        .why-desc { color: var(--text-gray); font-size: 0.9rem; line-height: 1.6; }
-        
-        .pipeline-section { background: white; }
-        .pipeline-flow { display: flex; justify-content: space-around; align-items: center; margin: 2rem 0; position: relative; flex-wrap: wrap; gap: 2rem; }
-        .pipeline-step { background: white; border: 3px solid var(--primary); border-radius: 50%; width: 120px; height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1; position: relative; }
-        .pipeline-icon { font-size: 2rem; }
-        .pipeline-label { font-weight: 700; font-size: 0.7rem; margin-top: 0.5rem; text-align: center; line-height: 1.2; }
-        
-        .cta-section { padding: 4rem 2rem; background: var(--gradient-primary); text-align: center; color: white; }
-        .cta-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; font-weight: 900; margin-bottom: 2rem; }
-        .btn-white { background: white; color: var(--primary); }
-        .btn-outline { background: transparent; color: white; border: 2px solid white; }
-        
-        footer { background: #1A1F36; color: white; padding: 3rem 2rem 2rem; }
-        .footer-content { max-width: 800px; margin: 0 auto; text-align: center; }
-        .footer-content h3 { font-size: 1.5rem; margin-bottom: 1rem; }
-        .footer-content p { color: rgba(255,255,255,0.8); font-size: 1rem; margin-bottom: 1.5rem; }
-        .footer-content a { color: var(--primary); text-decoration: none; font-size: 1.1rem; font-weight: 700; }
-        .footer-legal { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; margin-top: 2rem; color: rgba(255,255,255,0.5); font-size: 0.85rem; }
-        
-        @media (max-width: 1024px) {
-            .nav-links { display: none; }
-            .cards-grid, .pattern-grid, .why-grid, .workflow-grid { grid-template-columns: repeat(2, 1fr); }
-            .evidence-grid, .flow-grid { grid-template-columns: repeat(2, 1fr); }
+        @media (min-width: 768px) {
+            .why-block { flex-direction: row; align-items: center; }
         }
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .cards-grid, .evidence-grid, .pattern-grid, .flow-grid, .why-grid, .workflow-grid { grid-template-columns: 1fr; }
-            .rule-grid { gap: 1.5rem; }
-            .rule-circle { width: 110px; height: 110px; }
-            .rule-number { font-size: 2rem; }
+        .why-block-content { flex: 1; }
+        .why-block-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; background: rgba(20, 184, 166, 0.1); color: var(--primary); font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .why-block p { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
+        .why-block-img { width: 11rem; height: 11rem; flex-shrink: 0; }
+        .why-block-img img { width: 100%; height: 100%; object-fit: contain; }
+
+        /* What the World Says */
+        .evidence-section { background-image: linear-gradient(rgba(248,250,251,0.9), rgba(248,250,251,0.92)), url("images/background.png"); }
+        .evidence-section .container { position: relative; z-index: 1; }
+        .evidence-subtitle { text-align: center; color: var(--muted); font-size: 0.875rem; max-width: 42rem; margin: 0 auto 3rem; }
+        .evidence-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 64rem; margin: 0 auto 3rem; }
+        @media (min-width: 768px) { .evidence-grid { grid-template-columns: repeat(3, 1fr); } }
+        .evidence-card {
+            padding: 1.5rem; border-radius: 1rem; background: #fff; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            text-align: center;
         }
+        .evidence-card .logo-emoji { font-size: 1.875rem; margin-bottom: 0.75rem; }
+        .evidence-card .logo-emoji svg { width: 1.875rem; height: 1.875rem; stroke: currentColor; fill: none; color: var(--primary); }
+        .evidence-card h3 { font-size: 0.875rem; font-weight: 700; color: var(--foreground); margin-bottom: 0.5rem; }
+        .evidence-card p { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+
+        /* Trusted by */
+        .trusted-title { font-size: 0.875rem; font-weight: 600; color: var(--foreground); margin-bottom: 1rem; }
+        .eureka-highlight { text-align: center; margin-bottom: 1.5rem; padding: 1.25rem 1.5rem; border-radius: 1rem; background: rgba(20, 184, 166, 0.08); border: 1px solid rgba(20, 184, 166, 0.25); }
+        .eureka-highlight .eureka-badge { font-size: 1.25rem; font-weight: 800; color: var(--foreground); letter-spacing: 0.02em; margin-bottom: 0.5rem; }
+        .eureka-highlight .eureka-desc { font-size: 0.8125rem; color: var(--muted); line-height: 1.5; max-width: 42rem; margin: 0 auto; }
+        .trusted-tags { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; color: var(--muted); font-size: 0.75rem; font-weight: 500; }
+        .trusted-tags span { padding: 0.5rem 1rem; border-radius: 0.5rem; background: var(--secondary); }
+
+        /* Research Pipeline */
+        .pipeline-title { font-size: 0.875rem; font-weight: 600; color: var(--foreground); margin-bottom: 1rem; }
+        .pipeline-steps { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+        @media (min-width: 768px) { .pipeline-steps { flex-direction: row; flex-wrap: wrap; justify-content: center; } }
+        .pipeline-steps .step { display: flex; align-items: center; gap: 0.5rem; }
+        .pipeline-steps .step span { padding: 0.5rem 1rem; border-radius: 9999px; background: rgba(20, 184, 166, 0.1); color: var(--primary); font-size: 0.75rem; font-weight: 500; white-space: nowrap; }
+        .pipeline-steps .step img { width: 1.25rem; height: 1.25rem; transform: scaleX(-1); }
+        @media (max-width: 768px) { .pipeline-steps .step img { display: none; } }
+
+        /* FAQ */
+        .faq-section { background-image: linear-gradient(rgba(255,255,255,0.88), rgba(248,252,255,0.9)), url("images/dna background.png"); }
+        .faq-section .container { position: relative; z-index: 1; }
+        .faq-list { max-width: 48rem; margin: 0 auto; display: flex; flex-direction: column; gap: 0.5rem; }
+        .faq-item { border-radius: 1rem; background: #fff; border: 1px solid var(--border); overflow: hidden; }
+        .faq-item summary {
+            display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem;
+            font-size: 0.875rem; font-weight: 600; color: var(--foreground); cursor: pointer; list-style: none;
+        }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary .plus { width: 1.75rem; height: 1.75rem; border-radius: 9999px; background: var(--primary); color: var(--primary-foreground); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; transition: transform 0.2s; }
+        .faq-item[open] summary .plus { transform: rotate(45deg); }
+        .faq-item .answer { padding: 0 1.5rem 1rem; font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+        .faq-item .answer p { margin-bottom: 0.5rem; }
+        .faq-item .answer p:last-of-type { margin-bottom: 0; }
+        .faq-item .answer ul { margin: 0.5rem 0 0 1rem; padding-left: 1rem; }
+        .faq-item .answer li { margin-bottom: 0.25rem; }
+        .faq-item .answer strong { color: var(--foreground); }
+
+        /* Footer */
+        footer {
+            position: relative; color: var(--primary-foreground); padding: 3rem 2rem;
+            background: linear-gradient(rgba(15,80,90,0.92), rgba(20,90,95,0.94)), url("images/background.png") center/cover no-repeat;
+        }
+        footer .footer-inner { position: relative; z-index: 1; }
+        .footer-inner { max-width: 72rem; margin: 0 auto; }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 2.5rem; }
+        @media (min-width: 768px) { .footer-grid { grid-template-columns: repeat(4, 1fr); } }
+        .footer-col h3 { font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.3; }
+        .footer-col h4 { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .footer-col p, .footer-col ul { font-size: 0.75rem; opacity: 0.85; line-height: 1.6; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.5rem; }
+        .footer-col ul a:hover { opacity: 1; }
+        .footer-col .btn-footer { margin-top: 1rem; padding: 0.5rem 1.25rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.5); background: transparent; color: inherit; font-size: 0.75rem; font-weight: 500; cursor: pointer; }
+        .footer-col .btn-footer:hover { background: rgba(255,255,255,0.1); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 0.75rem; font-size: 0.75rem; opacity: 0.7; }
+        @media (min-width: 768px) { .footer-bottom { flex-direction: row; } }
     </style>
 </head>
 <body>
     <nav>
-        <div class="nav-container">
-            <div class="logo"><img src="burak-logo.jpg" alt="BURAK MULTIOMICS"></div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#how">How It Works</a></li>
-                <li><a href="#science">The Science</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <button class="cta-btn">Start a Pilot</button>
+        <a href="index.html#home" class="nav-logo">
+            <span class="logo-text">Burak <span>Multiomics</span></span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="how-it-works.html">How It Works</a>
+            <a href="the-science.html">The Science</a>
         </div>
+        <button class="nav-cta" type="button" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact Us</button>
     </nav>
 
     <section class="hero" id="home">
-        <div class="hero-container">
-            <div class="hero-badge">
-                <span class="badge-icon">🔬</span>
-                <span>8 WEEKS EARLY DETECTION</span>
-            </div>
-            <h1>Predict Health Risks <span class="highlight">Before They Escalate</span></h1>
-            <p class="hero-subtitle">We're not an AI company. We're software engineers who believe the best healthcare breakthroughs come from applying <strong>solid mathematics</strong> to <strong>peer-reviewed research</strong>.</p>
-            <p class="hero-tagline">Burakomics uses multi-omics velocity analysis to spot diseases earlier & enable protective intervention.</p>
-            <div class="hero-buttons">
-                <button class="btn btn-primary">See How It Works</button>
-                <button class="btn btn-secondary">Start a Pilot</button>
+        <div class="hero-bg-overlay" aria-hidden="true"></div>
+        <div class="hero-inner">
+            <h1>Predict Health Risks Before They Escalate</h1>
+            <p>We're not an AI company or a software company—we believe the best healthcare breakthroughs come from applying real science to generate actionable insights.</p>
+            <p class="hero-tag">Burak Multiomics uses multi-omics velocity analysis to trace disease earlier & enable preventive interventions.</p>
+            <div class="hero-btns">
+                <a href="how-it-works.html" class="btn btn-outline">See How It Works</a>
+                <button class="btn btn-primary" type="button" onclick="location.href='mailto:contactus@burakomics.com'">Partner to Save Lives</button>
             </div>
         </div>
     </section>
 
-    <section class="section analysis-section">
+    <section class="section section-analyzes">
         <div class="container">
-            <h2 class="analysis-title">Burakomics Analyzes</h2>
-            <p class="analysis-subtitle">Fragmented biomarker data analyzed through comprehensive multi-layer integration</p>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon gut">🦠</div>
-                    <h3>Gut</h3>
-                    <p>Fragmented biomarker data weeks early</p>
-                    <span class="card-label">Slow baseline (months)</span>
+            <h2 class="section-title">Burak Multiomics <span class="accent">Analyzes</span></h2>
+            <div class="analyzes-row">
+                <div class="analyze-card">
+                    <img src="images/gut.png" alt="Gut">
+                    <span class="analyze-card-title">Gut</span>
+                    <span class="analyze-card-subtitle">Fragmented biomarker data weeks early</span>
                 </div>
-                <div class="card">
-                    <div class="card-icon blood">🩸</div>
-                    <h3>Blood</h3>
-                    <p>Delayed disease detection risk multiplier</p>
-                    <span class="card-label">FAST signals (stats)</span>
+                <div class="analyze-card">
+                    <img src="images/blood.png" alt="Blood">
+                    <span class="analyze-card-title">Blood</span>
+                    <span class="analyze-card-subtitle">Delayed disease detection risk multiplier</span>
                 </div>
-                <div class="card">
-                    <div class="card-icon inflammation">🔥</div>
-                    <h3>Inflammation</h3>
-                    <p>High inflammatory amplifier</p>
-                    <span class="card-label">3-of-5 signal confidence</span>
+                <div class="analyze-card">
+                    <img src="images/infimation.png" alt="Inflammation">
+                    <span class="analyze-card-title">Inflammation</span>
+                    <span class="analyze-card-subtitle">High inflammatory amplifier 3-of-5 signal confidence</span>
+                </div>
+            </div>
+            <p class="analyzes-tagline">We connect what your gut is already saying, the story in your blood, and the signal of inflammation; so you see the full picture before it becomes a crisis.</p>
+        </div>
+    </section>
+
+    <section class="section why-section" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">Why Burak Multiomics <span class="accent">Works</span></h2>
+            <p class="why-subtitle">Disease develops gradually through measurable biological changes. Our multi-omics approach detects these signals early to enable preventive healthcare decisions.</p>
+            <div class="why-blocks">
+                <div class="why-block">
+                    <div class="why-block-img"><img src="images/magnifyingGlass.png" alt="Multi-Omics Integration"></div>
+                    <div class="why-block-content">
+                        <span class="why-block-badge">Block 1 - Multi-Omics Integration</span>
+                        <p>Burak Multiomics combines gut microbiome, blood biomarkers, and inflammatory markers to create a comprehensive view of biological health.</p>
+                    </div>
+                </div>
+                <div class="why-block">
+                    <div class="why-block-img"><img src="images/barchart.png" alt="Velocity-Based Analysis"></div>
+                    <div class="why-block-content">
+                        <span class="why-block-badge">Block 2 - Velocity-Based Analysis</span>
+                        <p>Instead of isolated readings, Burak Multiomics analyzes how quickly biological markers change over time, revealing hidden early-risk patterns.</p>
+                    </div>
+                </div>
+                <div class="why-block">
+                    <div class="why-block-img"><img src="images/shiled.png" alt="Early Predictive Detection"></div>
+                    <div class="why-block-content">
+                        <span class="why-block-badge">Block 3 - Early Predictive Detection</span>
+                        <p>By identifying risk signals weeks before symptoms appear, Burak Multiomics supports timely clinical and lifestyle interventions.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="workflow-section">
+    <section class="section evidence-section" id="science">
         <div class="container">
-            <div class="section-header" style="color: white;">
-                <h2 class="section-title" style="color: white;">From Data Ingestion to Clinical Insights</h2>
-                <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Multi-layer biomarker analysis pipeline</p>
-            </div>
-            <div class="workflow-grid">
-                <div class="workflow-card">
-                    <div class="workflow-title">📊 Clinical Dashboard</div>
-                    <div class="workflow-desc">Individual patient data goes through a series of IP case pattern analysis algorithms providing personalized health insights</div>
-                </div>
-                <div class="workflow-card">
-                    <div class="workflow-title">👥 Population Dashboard</div>
-                    <div class="workflow-desc">Aggregate analysis of clinical layer data across cohorts of reports revealing population-level health trends</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section evidence-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">What the World Says and Research Shows</h2>
-                <p class="section-subtitle">Leading global health organizations and medical research highlight the importance of multi-omics for early disease detection</p>
-            </div>
+            <h2 class="section-title">Validation &amp; <span class="accent">Impact</span></h2>
+            <p class="evidence-subtitle">Peer-reviewed methodology, a proven predictive window, and measurable institutional ROI—not claims, but results.</p>
             <div class="evidence-grid">
                 <div class="evidence-card">
-                    <span class="evidence-source">WHO</span>
-                    <h3 class="evidence-title">WHO calls for multi-omics to advance early disease warning systems</h3>
-                    <p class="evidence-date">13 July 2023</p>
-                    <a href="#" class="evidence-link">Read more →</a>
+                    <span class="logo-emoji">✓</span>
+                    <h3>Peer-Reviewed Science</h3>
+                    <p>Our methodology and AMS module were peer-reviewed and showcased at the 7th International Qatar Pharmacy Conference (QIPC) 2026. Regression tests on 500 reports showed 94% predictive accuracy.</p>
                 </div>
                 <div class="evidence-card">
-                    <span class="evidence-source">The Lancet</span>
-                    <h3 class="evidence-title">Multi-omics in preventive health: New frontiers in risk stratification</h3>
-                    <p class="evidence-date">28 February 2024</p>
-                    <a href="#" class="evidence-link">Read more →</a>
+                    <span class="logo-emoji">⏱</span>
+                    <h3>The 8-Week Predictive Window</h3>
+                    <p>We calculate the Velocity of Failure (ΔV) between gut and blood markers to predict metabolic collapse up to 8 weeks before clinical manifestation—validated in ischemic gangrene and T5 Diabetes cohorts.</p>
                 </div>
                 <div class="evidence-card">
-                    <span class="evidence-source">Nature</span>
-                    <h3 class="evidence-title">Integrating Multi-omics for Proactive Healthcare Systems</h3>
-                    <p class="evidence-date">9 November 2025</p>
-                    <a href="#" class="evidence-link">Read more →</a>
+                    <span class="logo-emoji"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v4"/><path d="M12 10v8"/><path d="M17 6v12"/></svg></span>
+                    <h3>Institutional ROI</h3>
+                    <p>Estimated $142,500 savings per batch (500 reports). For a full-risk cohort, the model projects $150M+ USD annual cost-avoidance potential by preventing high-cost states before they occur.</p>
+                </div>
+            </div>
+            <div class="container" style="max-width: 64rem;">
+                <h3 class="trusted-title">Ecosystem &amp; Partners</h3>
+                <div class="eureka-highlight">
+                    <p class="eureka-badge">Semifinalist in GCC Eureka</p>
+                    <p class="eureka-desc">GCC Eureka is a flagship innovation program that brings together startups, corporates, and government entities across the Gulf Cooperation Council to accelerate high-impact solutions. Being selected as a semifinalist recognizes Burak Multiomics as one of the region’s most promising ventures in health tech and predictive analytics.</p>
+                </div>
+                <div class="trusted-tags">
+                    <span>Eureka! GCC</span>
+                </div>
+            </div>
+            <div class="container" style="max-width: 64rem; margin-top: 2.5rem;">
+                <h3 class="pipeline-title">Continuous Research Pipeline</h3>
+                <div class="pipeline-steps">
+                    <div class="step"><span>Data Collection</span><img src="images/left arrow.png" alt=""></div>
+                    <div class="step"><span>Pre-clinical Trials</span><img src="images/left arrow.png" alt=""></div>
+                    <div class="step"><span>Ongoing Studies</span><img src="images/left arrow.png" alt=""></div>
+                    <div class="step"><span>Pilot of Validation</span><img src="images/left arrow.png" alt=""></div>
+                    <div class="step"><span>Deployment</span><img src="images/left arrow.png" alt=""></div>
+                    <div class="step"><span>Optimization</span></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section flow-section" id="how">
+    <section class="section faq-section">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">How Data Flows</h2>
-                <p class="section-subtitle">Different biomarker patterns mean different things. Here's how to read them.</p>
-            </div>
-            <div class="flow-diagram">
-                <div class="flow-grid">
-                    <div class="flow-step">
-                        <div class="flow-icon">📥</div>
-                        <div class="flow-label">DATA INPUT</div>
-                        <div class="flow-desc">Multiple biomarker sources</div>
+            <h2 class="section-title">Frequently Asked <span class="accent">Questions</span></h2>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What is Burak Multiomics? <span class="plus">+</span></summary>
+                    <div class="answer">
+                        <p>Burak Multiomics is a data integration and analytics platform designed to unify multi-omics datasets — including genomics, transcriptomics, proteomics, and metabolomics — into a single, interpretable system.</p>
+                        <p>It enables researchers and clinicians to transform complex biological data into actionable insights across both clinical and population-level use cases.</p>
                     </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">🩸</div>
-                        <div class="flow-label">Blood Markers</div>
-                        <div class="flow-desc">GLU, A1C, HOMA-IR, Lipids</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What problem does Burak Multiomics solve? <span class="plus">+</span></summary>
+                    <div class="answer">
+                        <p>Multi-omics data is often fragmented across tools, difficult to standardize, and challenging to interpret in a clinical context.</p>
+                        <p>Burak solves this by integrating multiple biological layers into a unified framework, reducing data silos and enabling cross-layer analysis that supports precision medicine and large-scale research initiatives.</p>
                     </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">🦠</div>
-                        <div class="flow-label">Gut Microbiome</div>
-                        <div class="flow-desc">Firmicutes, Akkermansia</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Who is Burak Multiomics built for? <span class="plus">+</span></summary>
+                    <div class="answer">
+                        <p>Burak Multiomics is designed for:</p>
+                        <ul>
+                            <li>Clinical researchers</li>
+                            <li>Translational scientists</li>
+                            <li>Precision medicine teams</li>
+                            <li>Biotech and pharmaceutical organizations</li>
+                            <li>Population health researchers</li>
+                        </ul>
+                        <p>It supports teams that need scalable, structured, and interpretable multi-omics analysis.</p>
                     </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">🔥</div>
-                        <div class="flow-label">Inflammation</div>
-                        <div class="flow-desc">CRP, IL-6, TNF-α</div>
+                </details>
+                <details class="faq-item">
+                    <summary>How does Burak Multiomics support clinical and population insights? <span class="plus">+</span></summary>
+                    <div class="answer">
+                        <p>Burak operates through structured analytical layers:</p>
+                        <ul>
+                            <li><strong>Clinical Layer:</strong> Connects molecular data to disease pathways, biomarkers, and potential therapeutic relevance.</li>
+                            <li><strong>Population Layer:</strong> Identifies cohort-level trends, stratifies patient groups, and enables large-scale biological pattern discovery.</li>
+                        </ul>
+                        <p>This layered approach allows users to move from individual molecular signals to broader population-level understanding.</p>
                     </div>
-                </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How is Burak Multiomics different from traditional bioinformatics tools? <span class="plus">+</span></summary>
+                    <div class="answer">
+                        <p>Traditional bioinformatics tools often focus on single-omics analysis or require heavy technical expertise to integrate multiple datasets.</p>
+                        <p>Burak Multiomics is designed as an integrated platform that:</p>
+                        <ul>
+                            <li>Unifies multiple biological data types</li>
+                            <li>Enables cross-layer exploration</li>
+                            <li>Improves interpretability</li>
+                            <li>Scales from individual cases to large cohorts</li>
+                        </ul>
+                        <p>It bridges the gap between raw omics data and real-world clinical or research decisions.</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
 
-    <section class="section patterns-section" id="science">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Different Patterns Mean Different Things</h2>
-                <p class="section-subtitle">Here's how to read them</p>
-            </div>
-            <div class="pattern-grid">
-                <div class="pattern-card critical">
-                    <div class="pattern-status critical">CRITICAL</div>
-                    <h3 class="pattern-title">Blood High +<br>Gut Normal</h3>
-                    <p class="pattern-desc">Blood markers spiking but gut hasn't changed</p>
-                    <div class="pattern-meaning"><strong>Meaning:</strong> Acute metabolic stress - body is compensating</div>
-                    <div class="marker-row">
-                        <div class="marker high"></div><div class="marker high"></div><div class="marker low"></div><div class="marker low"></div><div class="marker low"></div>
-                    </div>
+    <footer id="contact">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Burak Multiomics</h3>
+                    <p>Predictive Health Intelligence<br>From biological signal to<br>actionable intelligence.</p>
                 </div>
-                <div class="pattern-card warning">
-                    <div class="pattern-status warning">WARNING</div>
-                    <h3 class="pattern-title">Blood High +<br>Gut High</h3>
-                    <p class="pattern-desc">Both systems deteriorating together</p>
-                    <div class="pattern-meaning"><strong>Meaning:</strong> Chronic condition developing</div>
-                    <div class="marker-row">
-                        <div class="marker high"></div><div class="marker high"></div><div class="marker high"></div><div class="marker high"></div><div class="marker low"></div>
-                    </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="how-it-works.html">How It Works</a></li>
+                        <li><a href="the-science.html">The Science</a></li>
+                    </ul>
                 </div>
-                <div class="pattern-card monitor">
-                    <div class="pattern-status monitor">MONITOR</div>
-                    <h3 class="pattern-title">Blood Normal +<br>Gut High</h3>
-                    <p class="pattern-desc">Gut dysbiosis but blood stable</p>
-                    <div class="pattern-meaning"><strong>Meaning:</strong> Early stage gut intervention window</div>
-                    <div class="marker-row">
-                        <div class="marker low"></div><div class="marker low"></div><div class="marker high"></div><div class="marker high"></div><div class="marker low"></div>
-                    </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Publications</a></li>
+                        <li><a href="#">Clinical Partners</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Documentation</a></li>
+                    </ul>
                 </div>
-                <div class="pattern-card safe">
-                    <div class="pattern-status safe">SAFE</div>
-                    <h3 class="pattern-title">Blood Normal +<br>Gut Normal</h3>
-                    <p class="pattern-desc">Both systems in balance</p>
-                    <div class="pattern-meaning"><strong>Meaning:</strong> Healthy metabolic state</div>
-                    <div class="marker-row">
-                        <div class="marker low"></div><div class="marker low"></div><div class="marker low"></div><div class="marker low"></div><div class="marker low"></div>
-                    </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="mailto:contactus@burakomics.com">contactus@burakomics.com</a></li>
+                        <li><a href="mailto:contactus@burakomics.com">Request Pilot</a></li>
+                        <li><a href="#">Book a Conversation</a></li>
+                    </ul>
+                    <button class="btn-footer" type="button" onclick="location.href='mailto:contactus@burakomics.com'">Partner to Save Lives</button>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section class="section rule-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">The 3-of-5 Rule</h2>
-                <p class="section-subtitle">Single markers can fluctuate. Patterns don't lie.</p>
+            <div class="footer-bottom">
+                <p>© Burak Multiomics · Privacy Policy · Terms · Data Security</p>
             </div>
-            <div class="rule-grid">
-                <div class="rule-circle critical">
-                    <div class="rule-number">3+</div>
-                    <div class="rule-label">CRITICAL<br>Intervention<br>required</div>
-                </div>
-                <div class="rule-circle watch">
-                    <div class="rule-number">2</div>
-                    <div class="rule-label">WATCH<br>Monitor<br>2 Weeks</div>
-                </div>
-                <div class="rule-circle noise">
-                    <div class="rule-number">1</div>
-                    <div class="rule-label">NOISE<br>Restart in<br>4 Weeks</div>
-                </div>
-            </div>
-            <p class="rule-tagline">Disease develops gradually through measurable biological changes</p>
-        </div>
-    </section>
-
-    <section class="section why-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Why Burakomics Works</h2>
-                <p class="section-subtitle">Comprehensive view of biological health through integrated analysis</p>
-            </div>
-            <div class="why-grid">
-                <div class="why-card">
-                    <div class="why-icon">🔗</div>
-                    <h3 class="why-title">Multi-Omics Integration</h3>
-                    <p class="why-desc">Combines gut microbiome, blood biomarkers, and inflammatory markers for comprehensive health insights</p>
-                </div>
-                <div class="why-card">
-                    <div class="why-icon">⚡</div>
-                    <h3 class="why-title">Velocity-Based Analysis</h3>
-                    <p class="why-desc">Analyzes how quickly biological markers change over time, revealing hidden early-risk patterns</p>
-                </div>
-                <div class="why-card">
-                    <div class="why-icon">🎯</div>
-                    <h3 class="why-title">Early Predictive Detection</h3>
-                    <p class="why-desc">Identifies risk signals weeks before symptoms appear for timely interventions</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section pipeline-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Research Pipeline</h2>
-                <p class="section-subtitle">Models evolve through peer-reviewed research and real-world validation</p>
-            </div>
-            <div class="pipeline-flow">
-                <div class="pipeline-step">
-                    <div class="pipeline-icon">🔬</div>
-                    <div class="pipeline-label">Ongoing<br>Studies</div>
-                </div>
-                <div class="pipeline-step">
-                    <div class="pipeline-icon">✅</div>
-                    <div class="pipeline-label">Clinical<br>Validation</div>
-                </div>
-                <div class="pipeline-step">
-                    <div class="pipeline-icon">🚀</div>
-                    <div class="pipeline-label">Deployment</div>
-                </div>
-                <div class="pipeline-step">
-                    <div class="pipeline-icon">🔄</div>
-                    <div class="pipeline-label">Real-world<br>Feedback</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section" id="contact">
-        <div class="container">
-            <h2>Start Your Pilot Program</h2>
-            <div class="hero-buttons">
-                <button class="btn btn-white">Request Pilot</button>
-                <button class="btn btn-outline">Schedule Demo</button>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-content">
-            <h3>Contact Us</h3>
-            <p>Get in touch to learn more about BURAK Multiomics</p>
-            <a href="/cdn-cgi/l/email-protection#d9bab6b7adb8baad99bbacabb8b2b6b4b0baaaf7bab6b4"><span class="__cf_email__" data-cfemail="e98a86879d888a9da98b9c9b88828684808a9ac78a8684">[email&#160;protected]</span></a>
-            <div class="footer-legal">© 2026 BURAK Multiomics | All Rights Reserved</div>
         </div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
+                const id = this.getAttribute('href');
+                if (id === '#') return;
+                e.preventDefault();
+                document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
